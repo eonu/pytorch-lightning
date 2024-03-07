@@ -141,7 +141,8 @@ if __name__ == "__main__":
             raise ValueError(
                 f"Unexpected package name: {_PACKAGE_NAME}. Possible choices are: {list(_PACKAGE_MAPPING)}"
             )
-        package_to_install = _PACKAGE_MAPPING.get(_PACKAGE_NAME, "pytorch_lightning")
+        package_to_install = _PACKAGE_MAPPING.get(_PACKAGE_NAME, "lightning")
+        package_to_install = "pytorch_lightning"  # @eonu: override
         if package_to_install == "lightning":
             # merge all requirements files
             assistant._load_aggregate_requirements(_PATH_REQUIRE, _FREEZE_REQUIREMENTS)
@@ -162,6 +163,7 @@ if __name__ == "__main__":
     setup_module = _load_py_module(name=f"{package_to_install}_setup", location=pkg_setup)
     setup_args = setup_module._setup_args()
     is_main_pkg = package_to_install == "lightning"
+    is_main_pkg = True  # @eonu: override
     print(f"Installing as the main package: {is_main_pkg}")
     if is_source_install:
         # we are installing from source, set the correct manifest path
